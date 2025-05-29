@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //Old Input System Setup
+    //TODO: Change to New Input System, and network based controls
     [SerializeField] private int movementSpeed = 5;
     [SerializeField] private float rotationSpeed = 10f;
     private void Update()
