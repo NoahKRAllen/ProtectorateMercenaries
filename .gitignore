@@ -12,6 +12,8 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+*/[Tt]extMeshPro/
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -78,5 +80,6 @@ crashlytics-build.properties
 # Bought Assets
 /[Aa]ssets/[Mm]odels/
 **/[Mm]odels/
+**/[Dd]ownloadedFiles/
 #Intellij Files
 *.idea
