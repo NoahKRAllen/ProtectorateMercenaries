@@ -12,6 +12,7 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+*/[Ss]amples/
 */[Tt]extMeshPro/
 
 # MemoryCaptures can get excessive in size.
