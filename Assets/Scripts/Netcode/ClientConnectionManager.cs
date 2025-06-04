@@ -1,5 +1,7 @@
 using TMPro;
 using Unity.Entities;
+using Unity.NetCode;
+using Unity.Networking.Transport;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -91,11 +93,29 @@ public class ClientConnectionManager : MonoBehaviour
 
     private void StartServer()
     {
+        var serverWorld = ClientServerBootstrap.CreateServerWorld("MOBA Server World");
         
+        var serverEndpoint = NetworkEndpoint.AnyIpv4.WithPort(Port);
+        {
+            using var networkDriverQuery =
+                serverWorld.EntityManager.CreateEntityQuery(ComponentType.ReadWrite<NetworkStreamDriver>());
+            networkDriverQuery.GetSingletonRW<NetworkStreamDriver>().ValueRW.Listen(serverEndpoint);
+        }
     }
 
     private void StartClient()
     {
+        var clientWorld = ClientServerBootstrap.CreateClientWorld("MOBA Client World");
         
+        var connectionEndpoint = NetworkEndpoint.Parse(Address, Port);
+        {
+            using var networkDriverQuery =
+                clientWorld.EntityManager.CreateEntityQuery(ComponentType.ReadWrite<NetworkStreamDriver>());
+            
+            networkDriverQuery.GetSingletonRW<NetworkStreamDriver>().ValueRW.Connect(clientWorld.EntityManager, connectionEndpoint);
+        }
+
+        World.DefaultGameObjectInjectionWorld = clientWorld;
+
     }
 }
