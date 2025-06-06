@@ -2,30 +2,36 @@
 using UnityEngine.UI;
 public class AbilityCooldownUIController : MonoBehaviour
 {
-    public static AbilityCooldownUIController Instance;
+    public static AbilityCooldownUIController _instance;
     
-    [SerializeField] private Image aoeAbilityMask;
-    [SerializeField] private Image skillShotAbilityMask;
+    [SerializeField] private Image qAbilityMask;
+    [SerializeField] private Image eAbilityMask;
+    [SerializeField] private Image rAbilityMask;
     private void Awake()
     {
-        if (Instance)
+        if (_instance)
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        _instance = this;
     }
     private void Start()
     {
-        aoeAbilityMask.fillAmount = 0f;
-        skillShotAbilityMask.fillAmount = 0f;
+        qAbilityMask.fillAmount = 0f;
+        eAbilityMask.fillAmount = 0f;
+        rAbilityMask.fillAmount = 0f;
     }
-    public void UpdateAoeMask(float fillAmount)
+    public void UpdateQAbilityMask(float fillAmount)
     {
-        aoeAbilityMask.fillAmount = fillAmount;
+        qAbilityMask.fillAmount = fillAmount;
     }
-    public void UpdateSkillShotMask(float fillAmount)
+    public void UpdateEAbilityMask(float fillAmount)
     {
-        skillShotAbilityMask.fillAmount = fillAmount;
+        eAbilityMask.fillAmount = fillAmount;
+    }
+    public void UpdateRAbilityMask(float fillAmount)
+    {
+        rAbilityMask.fillAmount = fillAmount;
     }
 }
