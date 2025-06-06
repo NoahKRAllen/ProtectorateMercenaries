@@ -93,7 +93,7 @@ public class ClientConnectionManager : MonoBehaviour
 
     private void StartServer()
     {
-        var serverWorld = ClientServerBootstrap.CreateServerWorld("MOBA Server World");
+        var serverWorld = ClientServerBootstrap.CreateServerWorld("Match Server World");
         
         var serverEndpoint = NetworkEndpoint.AnyIpv4.WithPort(Port);
         {
@@ -105,7 +105,7 @@ public class ClientConnectionManager : MonoBehaviour
 
     private void StartClient()
     {
-        var clientWorld = ClientServerBootstrap.CreateClientWorld("MOBA Client World");
+        var clientWorld = ClientServerBootstrap.CreateClientWorld("Match Client World");
         
         var connectionEndpoint = NetworkEndpoint.Parse(Address, Port);
         {
@@ -115,6 +115,21 @@ public class ClientConnectionManager : MonoBehaviour
             networkDriverQuery.GetSingletonRW<NetworkStreamDriver>().ValueRW.Connect(clientWorld.EntityManager, connectionEndpoint);
         }
 
+        var team = teamDropdown.value switch
+        {
+            0 => TeamType.AutoAssign,
+            1 => TeamType.Blue,
+            2 => TeamType.Red,
+            _ => TeamType.None
+        };
+        
+        
+        var teamRequestEntity = clientWorld.EntityManager.CreateEntity();
+        clientWorld.EntityManager.AddComponentData(teamRequestEntity, new ClientTeamRequest
+        {
+            Value = team
+        });
+        
         World.DefaultGameObjectInjectionWorld = clientWorld;
 
     }

@@ -1223,10 +1223,10 @@ MonoBehaviour:
     - m_Text: Host (Client + Server)
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Client (Client Only)
+    - m_Text: Server (Server Only)
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Server (Server Only)
+    - m_Text: Client (Client Only)
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
