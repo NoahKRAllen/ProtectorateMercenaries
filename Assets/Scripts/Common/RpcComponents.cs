@@ -1,6 +1,10 @@
 ﻿using Unity.NetCode;
 
-public struct TeamRequest : IRpcCommand
+namespace Common
 {
-    public TeamType Value;
+    public struct TeamRequest : IRpcCommand
+    {
+        public TeamType Value;
+    }
 }
+

@@ -2,37 +2,54 @@
 using Unity.Entities;
 using Unity.NetCode;
 using UnityEngine;
+using Common;
+using Unity.Mathematics;
+using Unity.Transforms;
 
-[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-public partial struct ServerProcessGameEntryRequestSystem : ISystem
+namespace Server
 {
-    public void OnCreate(ref SystemState state)
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+    public partial struct ServerProcessGameEntryRequestSystem : ISystem
     {
-        var builder = new EntityQueryBuilder(Allocator.Temp).WithAll<TeamRequest, ReceiveRpcCommandRequest>();
-        state.RequireForUpdate(state.GetEntityQuery(builder));
-    }
-
-    public void OnUpdate(ref SystemState state)
-    {
-        var ecb = new EntityCommandBuffer(Allocator.Temp);
-        foreach (var (teamRequest, requestSource, requestEntity) 
-                 in SystemAPI.Query<TeamRequest, ReceiveRpcCommandRequest>().WithEntityAccess())
+        public void OnCreate(ref SystemState state)
         {
-            ecb.DestroyEntity(requestEntity);
-            ecb.AddComponent<NetworkStreamInGame>(requestSource.SourceConnection);
-            
-            var requestedTeamType = teamRequest.Value;
-
-            if (requestedTeamType == TeamType.AutoAssign)
-            {
-                requestedTeamType = TeamType.Blue;
-            }
-
-            var clientId = SystemAPI.GetComponent<NetworkId>(requestSource.SourceConnection).Value;
-            
-            Debug.Log($"Server is assigning Client ID: {clientId} to the {requestedTeamType.ToString()} team.");
+            state.RequireForUpdate<GamePrefabs>();
+            var builder = new EntityQueryBuilder(Allocator.Temp).WithAll<TeamRequest, ReceiveRpcCommandRequest>();
+            state.RequireForUpdate(state.GetEntityQuery(builder));
         }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var mercenaryPrefab = SystemAPI.GetSingleton<GamePrefabs>().Mercenary;
+            
+            foreach (var (teamRequest, requestSource, requestEntity) 
+                     in SystemAPI.Query<TeamRequest, ReceiveRpcCommandRequest>().WithEntityAccess())
+            {
+                ecb.DestroyEntity(requestEntity);
+                ecb.AddComponent<NetworkStreamInGame>(requestSource.SourceConnection);
+            
+                var requestedTeamType = teamRequest.Value;
+
+                if (requestedTeamType == TeamType.AutoAssign)
+                {
+                    requestedTeamType = TeamType.Blue;
+                }
+
+                var clientId = SystemAPI.GetComponent<NetworkId>(requestSource.SourceConnection).Value;
+            
+                Debug.Log($"Server is assigning Client ID: {clientId} to the {requestedTeamType.ToString()} team.");
+                
+                var newMerc = ecb.Instantiate(mercenaryPrefab);
+                ecb.SetName(newMerc, $"Mercenary {clientId}");
+                
+                var spawnPosition = new float3(0, 1, 0);
+                var newTransform = LocalTransform.FromPosition(spawnPosition);
+                ecb.SetComponent(newMerc, newTransform);
+            }
         
-        ecb.Playback(state.EntityManager);
+            ecb.Playback(state.EntityManager);
+        }
     }
 }
+

@@ -1,6 +1,10 @@
 ﻿using Unity.Entities;
-
-public struct ClientTeamRequest : IComponentData
+using Common;
+namespace Client
 {
-    public TeamType Value;
+    public struct ClientTeamRequest : IComponentData
+    {
+        public TeamType Value;
+    }    
 }
+

@@ -1,34 +1,38 @@
 ﻿using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
+using Common;
 
-[WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
-public partial struct ClientRequestGameEntrySystem : ISystem
+namespace Client
 {
-    private EntityQuery _pendingNetworkIdQuery;
-
-    public void OnCreate(ref SystemState state)
+    [WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation | WorldSystemFilterFlags.ThinClientSimulation)]
+    public partial struct ClientRequestGameEntrySystem : ISystem
     {
-        var builder = new EntityQueryBuilder(Allocator.Temp).WithAll<NetworkId>().WithNone<NetworkStreamInGame>();
-        _pendingNetworkIdQuery = state.GetEntityQuery(builder);
-        state.RequireForUpdate(_pendingNetworkIdQuery);
-        state.RequireForUpdate<ClientTeamRequest>();
-    }
+        private EntityQuery _pendingNetworkIdQuery;
 
-    public void OnUpdate(ref SystemState state)
-    {
-        var requestedTeam = SystemAPI.GetSingleton<ClientTeamRequest>().Value;
-        var ecb = new EntityCommandBuffer(Allocator.Temp);
-        var pendingNetworkIds = _pendingNetworkIdQuery.ToEntityArray(Allocator.Temp);
-
-        foreach (var pendingNetworkId in pendingNetworkIds)
+        public void OnCreate(ref SystemState state)
         {
-            ecb.AddComponent<NetworkStreamInGame>(pendingNetworkId);
-            var requestTeamEntity = ecb.CreateEntity();
-            ecb.AddComponent(requestTeamEntity, new TeamRequest { Value = requestedTeam });
-            ecb.AddComponent(requestTeamEntity, new SendRpcCommandRequest { TargetConnection = pendingNetworkId });
+            var builder = new EntityQueryBuilder(Allocator.Temp).WithAll<NetworkId>().WithNone<NetworkStreamInGame>();
+            _pendingNetworkIdQuery = state.GetEntityQuery(builder);
+            state.RequireForUpdate(_pendingNetworkIdQuery);
+            state.RequireForUpdate<ClientTeamRequest>();
         }
+
+        public void OnUpdate(ref SystemState state)
+        {
+            var requestedTeam = SystemAPI.GetSingleton<ClientTeamRequest>().Value;
+            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var pendingNetworkIds = _pendingNetworkIdQuery.ToEntityArray(Allocator.Temp);
+
+            foreach (var pendingNetworkId in pendingNetworkIds)
+            {
+                ecb.AddComponent<NetworkStreamInGame>(pendingNetworkId);
+                var requestTeamEntity = ecb.CreateEntity();
+                ecb.AddComponent(requestTeamEntity, new TeamRequest { Value = requestedTeam });
+                ecb.AddComponent(requestTeamEntity, new SendRpcCommandRequest { TargetConnection = pendingNetworkId });
+            }
         
-        ecb.Playback(state.EntityManager);
+            ecb.Playback(state.EntityManager);
+        }
     }
 }
