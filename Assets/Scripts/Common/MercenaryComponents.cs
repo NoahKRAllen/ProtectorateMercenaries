@@ -1,4 +1,5 @@
 ﻿using Unity.Entities;
+using Unity.NetCode;
 
 namespace Common
 {
@@ -8,6 +9,6 @@ namespace Common
 
     public struct Team : IComponentData
     {
-        public TeamType Value;
+        [GhostField] public TeamType Value;
     }
 }

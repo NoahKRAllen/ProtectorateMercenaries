@@ -40,10 +40,24 @@ namespace Server
             
                 Debug.Log($"Server is assigning Client ID: {clientId} to the {requestedTeamType.ToString()} team.");
                 
+                var spawnPosition = new float3(0, 1, 0);
+
+                switch (requestedTeamType)
+                {
+                    case TeamType.Blue:
+                        spawnPosition = new float3(-120, 1, -120);
+                        break;
+                    case TeamType.Red:
+                        spawnPosition = new float3(120, 1, 120);
+                        break;
+                    
+                    default:
+                        continue;
+                }
+                
                 var newMerc = ecb.Instantiate(mercenaryPrefab);
                 ecb.SetName(newMerc, $"Mercenary {clientId}");
                 
-                var spawnPosition = new float3(0, 1, 0);
                 var newTransform = LocalTransform.FromPosition(spawnPosition);
                 ecb.SetComponent(newMerc, newTransform);
                 ecb.SetComponent(newMerc, new GhostOwner{NetworkId = clientId});

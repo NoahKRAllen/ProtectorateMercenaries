@@ -1,4 +1,6 @@
 ﻿using Unity.Entities;
+using Unity.Rendering;
+using Unity.Transforms;
 using UnityEngine;
 
 namespace Common
@@ -13,6 +15,7 @@ namespace Common
                 AddComponent<MercenaryTag>(entity);
                 AddComponent<NewMercenaryTag>(entity);
                 AddComponent<Team>(entity);
+                AddComponent<URPMaterialPropertyBaseColor>(entity);
             }
         }
     }
