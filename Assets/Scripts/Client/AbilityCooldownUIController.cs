@@ -5,19 +5,19 @@ namespace Client
 {
     public class AbilityCooldownUIController : MonoBehaviour
     {
-        public static AbilityCooldownUIController _instance;
+        public static AbilityCooldownUIController Instance;
     
         [SerializeField] private Image qAbilityMask;
         [SerializeField] private Image eAbilityMask;
         [SerializeField] private Image rAbilityMask;
         private void Awake()
         {
-            if (_instance)
+            if (Instance)
             {
                 Destroy(gameObject);
                 return;
             }
-            _instance = this;
+            Instance = this;
         }
         private void Start()
         {

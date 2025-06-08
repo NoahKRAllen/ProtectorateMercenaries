@@ -1,6 +1,5 @@
 ﻿using Unity.Entities;
 using Unity.Rendering;
-using Unity.Transforms;
 using UnityEngine;
 
 namespace Common
@@ -14,7 +13,8 @@ namespace Common
                 var entity = GetEntity(TransformUsageFlags.Dynamic);
                 AddComponent<MercenaryTag>(entity);
                 AddComponent<NewMercenaryTag>(entity);
-                AddComponent<Team>(entity);
+                AddComponent<CameraFollowTag>(entity);
+                AddComponent<PlayerTeam>(entity);
                 AddComponent<URPMaterialPropertyBaseColor>(entity);
             }
         }

@@ -24,19 +24,19 @@ namespace Server
             var mercenaryPrefab = SystemAPI.GetSingleton<GamePrefabs>().Mercenary;
             
             foreach (var (teamRequest, requestSource, requestEntity) 
-                     in SystemAPI.Query<TeamRequest, ReceiveRpcCommandRequest>().WithEntityAccess())
+                     in SystemAPI.Query<RefRO<TeamRequest>, RefRO<ReceiveRpcCommandRequest>>().WithEntityAccess())
             {
                 ecb.DestroyEntity(requestEntity);
-                ecb.AddComponent<NetworkStreamInGame>(requestSource.SourceConnection);
+                ecb.AddComponent<NetworkStreamInGame>(requestSource.ValueRO.SourceConnection);
             
-                var requestedTeamType = teamRequest.Value;
+                var requestedTeamType = teamRequest.ValueRO.Value;
 
                 if (requestedTeamType == TeamType.AutoAssign)
                 {
                     requestedTeamType = TeamType.Blue;
                 }
 
-                var clientId = SystemAPI.GetComponent<NetworkId>(requestSource.SourceConnection).Value;
+                var clientId = SystemAPI.GetComponent<NetworkId>(requestSource.ValueRO.SourceConnection).Value;
             
                 Debug.Log($"Server is assigning Client ID: {clientId} to the {requestedTeamType.ToString()} team.");
                 
@@ -45,10 +45,10 @@ namespace Server
                 switch (requestedTeamType)
                 {
                     case TeamType.Blue:
-                        spawnPosition = new float3(-120, 1, -120);
+                        spawnPosition = new float3(-120, 1.5f, -120);
                         break;
                     case TeamType.Red:
-                        spawnPosition = new float3(120, 1, 120);
+                        spawnPosition = new float3(120, 1.5f, 120);
                         break;
                     
                     default:
@@ -60,10 +60,11 @@ namespace Server
                 
                 var newTransform = LocalTransform.FromPosition(spawnPosition);
                 ecb.SetComponent(newMerc, newTransform);
-                ecb.SetComponent(newMerc, new GhostOwner{NetworkId = clientId});
-                ecb.SetComponent(newMerc, new Team{Value = requestedTeamType});
                 
-                ecb.AppendToBuffer(requestSource.SourceConnection, new LinkedEntityGroup{Value = newMerc});
+                ecb.SetComponent(newMerc, new GhostOwner{NetworkId = clientId});
+                ecb.SetComponent(newMerc, new PlayerTeam{Value = requestedTeamType});
+                
+                ecb.AppendToBuffer(requestSource.ValueRO.SourceConnection, new LinkedEntityGroup{Value = newMerc});
             }
         
             ecb.Playback(state.EntityManager);

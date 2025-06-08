@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Rendering;
+using UnityEngine;
 
 namespace Common
 {
@@ -11,15 +12,16 @@ namespace Common
     {
         public void OnUpdate(ref SystemState state)
         {
+            
             var ecb = new EntityCommandBuffer(Allocator.Temp);
-            foreach (var (physicsMass, team, newCharacterEntity) in SystemAPI.Query<RefRW<PhysicsMass>, Team>()
+            foreach (var (physicsMass, playerTeam, newCharacterEntity) 
+                     in SystemAPI.Query<RefRW<PhysicsMass>, RefRO<PlayerTeam>>()
                          .WithAny<NewMercenaryTag>().WithEntityAccess())
             {
                 physicsMass.ValueRW.InverseInertia[0] = 0;
                 physicsMass.ValueRW.InverseInertia[1] = 0;
                 physicsMass.ValueRW.InverseInertia[2] = 0;
-
-                var teamColor = team.Value switch
+                var teamColor = playerTeam.ValueRO.Value switch
                 {
                     TeamType.Blue => new float4(0, 0, 1, 1),
                     TeamType.Red => new float4(1, 0, 0, 1),
@@ -29,6 +31,7 @@ namespace Common
                 ecb.SetComponent(newCharacterEntity, new URPMaterialPropertyBaseColor{Value = teamColor});
                 ecb.RemoveComponent<NewMercenaryTag>(newCharacterEntity);
             }
+            
             
             ecb.Playback(state.EntityManager);
         }
