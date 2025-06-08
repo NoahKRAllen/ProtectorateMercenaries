@@ -46,6 +46,10 @@ namespace Server
                 var spawnPosition = new float3(0, 1, 0);
                 var newTransform = LocalTransform.FromPosition(spawnPosition);
                 ecb.SetComponent(newMerc, newTransform);
+                ecb.SetComponent(newMerc, new GhostOwner{NetworkId = clientId});
+                ecb.SetComponent(newMerc, new Team{Value = requestedTeamType});
+                
+                ecb.AppendToBuffer(requestSource.SourceConnection, new LinkedEntityGroup{Value = newMerc});
             }
         
             ecb.Playback(state.EntityManager);
