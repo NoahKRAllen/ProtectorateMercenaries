@@ -82,5 +82,6 @@ crashlytics-build.properties
 /[Aa]ssets/[Mm]odels/
 **/[Mm]odels/
 **/[Dd]ownloadedFiles/
+/[Tt]estBuilds/
 #Intellij Files
 *.idea
