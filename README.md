@@ -1,2 +1,2 @@
 # ProtectorateMercenaries
-Top down wave survival Unity3D game 
+Top-down, wave survival, multiplayer, Unity3D game 
