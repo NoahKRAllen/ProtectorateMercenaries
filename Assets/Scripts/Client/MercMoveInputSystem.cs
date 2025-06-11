@@ -76,7 +76,6 @@ namespace Client
 
         protected override void OnUpdate()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
