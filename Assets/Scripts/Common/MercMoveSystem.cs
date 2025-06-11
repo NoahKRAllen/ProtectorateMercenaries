@@ -16,8 +16,10 @@ namespace Common
             //TODO: Swap this function from taking a moveTarget to accepting move direction from WASD input
             foreach (var (transform, movePosition, moveSpeed) 
                      in SystemAPI.Query<RefRW<LocalTransform>, RefRO<MercMoveTargetPosition>, 
-                             RefRO<CharacterMoveSpeed>>().WithAll<Simulate>())
+                         RefRO<CharacterMoveSpeed>>().WithAll<Simulate>())
             {
+                
+                //Should just be able to delete this two once we have WASD input, as we will already have moveDirection given
                 var moveTarget = movePosition.ValueRO.Value;
                 moveTarget.y = transform.ValueRO.Position.y;
 

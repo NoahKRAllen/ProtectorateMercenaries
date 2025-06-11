@@ -18,8 +18,8 @@ namespace Client
         {
             var ecb = new EntityCommandBuffer(Allocator.Temp);
 
-            foreach (var (transform,entity) in SystemAPI.Query<RefRO<LocalTransform>>().WithAll<GhostOwnerIsLocal>()
-                         .WithNone<OwnerMercTag>().WithEntityAccess())
+            foreach (var (transform,entity) in SystemAPI.Query<RefRO<LocalTransform>>()
+                         .WithAll<GhostOwnerIsLocal>().WithNone<OwnerMercTag>().WithEntityAccess())
             {
                 ecb.AddComponent(entity, new OwnerMercTag());
                 ecb.SetComponent(entity, new MercMoveTargetPosition{Value = transform.ValueRO.Position});
