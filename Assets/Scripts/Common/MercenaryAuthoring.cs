@@ -16,6 +16,7 @@ namespace Common
                 AddComponent<CameraFollowTag>(entity);
                 AddComponent<PlayerTeam>(entity);
                 AddComponent<URPMaterialPropertyBaseColor>(entity);
+                AddComponent<MercMoveTargetPosition>(entity);
             }
         }
     }
