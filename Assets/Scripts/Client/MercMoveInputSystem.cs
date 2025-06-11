@@ -67,7 +67,10 @@ namespace Client
             {
                 var mercEntity = SystemAPI.GetSingletonEntity<OwnerMercTag>();
                 //This line will be changed over to the select struct once WASD is implemented
-                EntityManager.SetComponentData(mercEntity, new MercMoveTargetPosition{Value = closestHit.Position});
+                EntityManager.SetComponentData(mercEntity, new MercMoveTargetPosition
+                {
+                    Value = closestHit.Position
+                });
             }
         }
 

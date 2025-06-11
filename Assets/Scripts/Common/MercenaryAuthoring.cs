@@ -6,6 +6,7 @@ namespace Common
 {
     public class MercenaryAuthoring : MonoBehaviour
     {
+        public float MoveSpeed;
         public class MercenaryBaker : Baker<MercenaryAuthoring>
         {
             public override void Bake(MercenaryAuthoring authoring)
@@ -17,6 +18,7 @@ namespace Common
                 AddComponent<PlayerTeam>(entity);
                 AddComponent<URPMaterialPropertyBaseColor>(entity);
                 AddComponent<MercMoveTargetPosition>(entity);
+                AddComponent(entity, new CharacterMoveSpeed { Value = authoring.MoveSpeed });
             }
         }
     }
