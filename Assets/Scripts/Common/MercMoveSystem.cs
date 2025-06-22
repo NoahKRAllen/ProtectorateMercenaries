@@ -19,7 +19,7 @@ namespace Common
                          RefRO<CharacterMoveSpeed>>().WithAll<Simulate>())
             {
                 
-                //Should just be able to delete this two once we have WASD input, as we will already have moveDirection given
+                //Should just be able to delete these two once we have WASD input, as we will already have moveDirection given
                 var moveTarget = movePosition.ValueRO.Value;
                 moveTarget.y = transform.ValueRO.Position.y;
 

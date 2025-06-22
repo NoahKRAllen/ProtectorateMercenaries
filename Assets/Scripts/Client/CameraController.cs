@@ -1,8 +1,9 @@
-﻿using Unity.Cinemachine;
+﻿using Common;
+using Unity.Cinemachine;
 using Unity.Entities;
 using UnityEngine;
 
-namespace TMG.NFE_Tutorial
+namespace Client
 {
     public class CameraController : MonoBehaviour
     {
@@ -50,23 +51,24 @@ namespace TMG.NFE_Tutorial
             
         }
 
-        /*private void Start()
+        private void Start()
         {
             if (World.DefaultGameObjectInjectionWorld == null) return;
             _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             _teamControllerQuery = _entityManager.CreateEntityQuery(typeof(ClientTeamRequest));
-            _localChampQuery = _entityManager.CreateEntityQuery(typeof(OwnerChampTag));
+            _localChampQuery = _entityManager.CreateEntityQuery(typeof(OwnerMercTag));
 
             // Move the camera to the base corresponding to the team the player is on.
             // Spectators' cameras will start in the center of the map
+            //TODO: This part will be removed once we swap from MOBA to wave survival
             if (_teamControllerQuery.TryGetSingleton<ClientTeamRequest>(out var requestedTeam))
             {
                 var team = requestedTeam.Value;
                 var cameraPosition = team switch
                 {
-                    TeamType.Blue => _blueTeamPosition,
-                    TeamType.Red => _redTeamPosition,
-                    _ => _spectatorPosition
+                    TeamType.Blue => blueTeamPosition,
+                    TeamType.Red => redTeamPosition,
+                    _ => spectatorPosition
                 };
                 transform.position = cameraPosition;
 
@@ -75,7 +77,7 @@ namespace TMG.NFE_Tutorial
                     _cameraSet = true;
                 }
             }
-        }*/
+        }
 
         private void OnValidate()
         {
@@ -84,11 +86,12 @@ namespace TMG.NFE_Tutorial
 
         private void Update()
         {
-            // SetCameraForAutoAssignTeam();
+            SetCameraForAutoAssignTeam();
             MoveCamera();
             ZoomCamera();
         }
 
+        //TODO: Rebuild function to do lazy follow of player merc, taking into account where the reticule is at.
         private void MoveCamera()
         {
             if (InScreenLeft)
@@ -126,25 +129,26 @@ namespace TMG.NFE_Tutorial
                     Mathf.Clamp(_positionComposer.CameraDistance, minZoomDistance, maxZoomDistance);
             }
         }
-
-        /*private void SetCameraForAutoAssignTeam()
+        
+        //TODO: This function will be removed once we swap from MOBA to wave survival
+        private void SetCameraForAutoAssignTeam()
         {
             if (!_cameraSet)
             {
-                if (_localChampQuery.TryGetSingletonEntity<OwnerChampTag>(out var localChamp))
+                if (_localChampQuery.TryGetSingletonEntity<OwnerMercTag>(out var localChamp))
                 {
-                    var team = _entityManager.GetComponentData<MobaTeam>(localChamp).Value;
+                    var team = _entityManager.GetComponentData<PlayerTeam>(localChamp).Value;
                     var cameraPosition = team switch
                     {
-                        TeamType.Blue => _blueTeamPosition,
-                        TeamType.Red => _redTeamPosition,
-                        _ => _spectatorPosition
+                        TeamType.Blue => blueTeamPosition,
+                        TeamType.Red => redTeamPosition,
+                        _ => spectatorPosition
                     };
                     transform.position = cameraPosition;
                     _cameraSet = true;
                 }
             }
-        }*/
+        }
 
         private void OnDrawGizmos()
         {

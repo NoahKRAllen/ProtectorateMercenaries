@@ -22,6 +22,8 @@ namespace Common
         [GhostField]public float Value;
     }
     
+    
+    //TODO: This will be updated/removed once we swap to WASD controls for movement
     [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
     public struct MercMoveTargetPosition : IInputComponentData
     {

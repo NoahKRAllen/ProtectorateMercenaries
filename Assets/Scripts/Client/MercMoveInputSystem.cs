@@ -37,15 +37,33 @@ namespace Client
             _inputActions.Player.Move.performed -= OnWASDInput;
             
         }
-
+        
+        //TODO: Build WASD Input controls
         private void OnWASDInput(InputAction.CallbackContext context)
         {
             Debug.Log("Still need to make WASD Input controls");
+            
+            Debug.Log($"Input coming in: {context.ReadValue<Vector2>()}");
+            
+            var input = context.ReadValue<Vector2>();
+
+
+            var moveDir = new Vector3(input.x, 0, input.y);
+
+            if (moveDir.magnitude > 0.1f)
+            {
+                var mercEntity = SystemAPI.GetSingletonEntity<OwnerMercTag>();
+                EntityManager.SetComponentData(mercEntity, new MercMoveTargetPosition
+                {
+                    Value = moveDir
+                });
+            }
+            
         }
         
         //TODO: Swap from select to move into WASD controlled twin-stick
         //OnSelectPosition will not be the function for movement once tutorial is finished
-        //However, this function should work for left and right clicks instead
+        //However, this function should work for left and right clicks instead, which can be used for abilities/actions
         private void OnSelectPositon(InputAction.CallbackContext context)
         {
             var collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
