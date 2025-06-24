@@ -33,6 +33,7 @@ namespace Common
     [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
     public struct AbilityInput : IInputComponentData
     {
-        [GhostField]public InputEvent AoeAbility;
+        //Currently used in-place of the label AoeAbility used in the course
+        [GhostField]public InputEvent QAbility;
     }
 }

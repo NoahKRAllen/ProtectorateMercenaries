@@ -1,24 +1,39 @@
-﻿using Unity.Entities;
-using UnityEngine.InputSystem;
+﻿using Common;
+using Unity.Entities;
 
 namespace Client
 {
     public partial class AbilityInputSystem : SystemBase
     {
-        private InputSystem_Actions _inputSystem;
-        protected override void OnUpdate()
+        private InputSystem_Actions _inputActions;
+        protected override void OnCreate()
         {
-            throw new System.NotImplementedException();
+            _inputActions = new InputSystem_Actions();
         }
 
         protected override void OnStartRunning()
         {
-            base.OnStartRunning();
+            _inputActions.Enable();
         }
         
         protected override void OnStopRunning()
         {
-            base.OnStopRunning();
+            _inputActions.Disable();
+        }
+
+        protected override void OnUpdate()
+        {
+            var newAbilityInput = new AbilityInput();
+
+            if (_inputActions.Player.AbilityOne.WasPressedThisFrame())
+            {
+                newAbilityInput.QAbility.Set();
+            }
+
+            foreach (var abilityInput in SystemAPI.Query<RefRW<AbilityInput>>())
+            {
+                abilityInput.ValueRW = newAbilityInput;
+            }
         }
     }
 }

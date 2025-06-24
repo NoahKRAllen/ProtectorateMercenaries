@@ -19,6 +19,7 @@ namespace Common
                 AddComponent<URPMaterialPropertyBaseColor>(entity);
                 AddComponent<MercMoveTargetPosition>(entity);
                 AddComponent(entity, new CharacterMoveSpeed { Value = authoring.MoveSpeed });
+                AddComponent<AbilityInput>(entity);
             }
         }
     }
