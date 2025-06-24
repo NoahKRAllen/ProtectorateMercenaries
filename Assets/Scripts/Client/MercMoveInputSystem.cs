@@ -10,6 +10,11 @@ namespace Client
     [UpdateInGroup(typeof(GhostInputSystemGroup))]
     public partial class MercMoveInputSystem : SystemBase
     {
+        #region DOTS Controls
+
+        
+
+        
         private InputSystem_Actions _inputActions;
         private CollisionFilter _selectionFilter;
         protected override void OnCreate()
@@ -91,7 +96,22 @@ namespace Client
                 });
             }
         }
-
+        #endregion
+        #region NGO Controls
+        private void HandleInput()
+        {
+            Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        
+            if (input.magnitude > 0.1f)
+            {
+                Vector3 moveDir = new Vector3(input.x, 0, input.y).normalized;
+                transform.position += moveDir * moveSpeed * Time.deltaTime;
+            
+                // Update network position
+                UpdatePositionServerRpc(transform.position);
+            }
+        }
+        #endregion
         protected override void OnUpdate()
         {
         }
