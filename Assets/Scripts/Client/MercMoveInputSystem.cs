@@ -32,19 +32,20 @@ namespace Client
         {
             _inputActions.Enable();
             _inputActions.Player.Select.performed += OnSelectPositon;
-            _inputActions.Player.Move.performed += OnWASDInput;
+            //_inputActions.Player.Move.performed += OnWASDInput;
         }
 
         protected override void OnStopRunning()
         {
             _inputActions.Disable();
             _inputActions.Player.Select.performed -= OnSelectPositon;
-            _inputActions.Player.Move.performed -= OnWASDInput;
+            //_inputActions.Player.Move.performed -= OnWASDInput;
             
         }
         
         //TODO: Build WASD Input controls
-        private void OnWASDInput(InputAction.CallbackContext context)
+        //Relearned that this has to be done in Update, as movement will happen while the buttons are held down
+        /*private void OnWASDInput(InputAction.CallbackContext context)
         {
             Debug.Log("Still need to make WASD Input controls");
             
@@ -64,7 +65,7 @@ namespace Client
                 });
             }
             
-        }
+        }*/
         
         //TODO: Swap from select to move into WASD controlled twin-stick
         //OnSelectPosition will not be the function for movement once tutorial is finished
@@ -98,7 +99,7 @@ namespace Client
         }
         #endregion
         #region NGO Controls
-        private void HandleInput()
+        /*private void HandleInput()
         {
             Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         
@@ -110,7 +111,7 @@ namespace Client
                 // Update network position
                 UpdatePositionServerRpc(transform.position);
             }
-        }
+        }*/
         #endregion
         protected override void OnUpdate()
         {
