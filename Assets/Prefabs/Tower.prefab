@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8397576244439328544}
   - component: {fileID: 639932923334283199}
   - component: {fileID: 3578962624800182042}
-  - component: {fileID: 8628830643065493480}
   - component: {fileID: 4041308187688863911}
   - component: {fileID: -3098274794901965415}
+  - component: {fileID: 8628830643065493480}
   m_Layer: 0
   m_Name: Tower
   m_TagString: Untagged
@@ -247,6 +247,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16549610bfe4458aa9389201d072bb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4041308187688863911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712798894548232650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b69fde048f40078b021768eddca728, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHitPoints: 250
+--- !u!114 &-3098274794901965415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1712798894548232650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac9b053104864396b98223ba55432671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mobaTeam: 0
 --- !u!54 &8628830643065493480
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -274,32 +300,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4041308187688863911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712798894548232650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54b69fde048f40078b021768eddca728, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHitPoints: 250
---- !u!114 &-3098274794901965415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1712798894548232650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac9b053104864396b98223ba55432671, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mobaTeam: 0
 --- !u!1 &4998970170389266126
 GameObject:
   m_ObjectHideFlags: 0
